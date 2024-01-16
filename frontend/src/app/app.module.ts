@@ -26,7 +26,6 @@ import { BreadcrumbComponent } from "./theme/components/breadcrumb/breadcrumb.co
 import { BackTopComponent } from "./theme/components/back-top/back-top.component";
 import { UserMenuComponent } from "./theme/components/user-menu/user-menu.component";
 import { BlankComponent } from "./pages/blank/blank.component";
-import { SearchComponent } from "./pages/search/search.component";
 import { NotFoundComponent } from "./pages/errors/not-found/not-found.component";
 import { FlagsMenuComponent } from "./theme/components/flags-menu/flags-menu.component";
 import { AuthService } from "./auth/auth.service";
@@ -59,7 +58,6 @@ import { AuthInterceptor } from "./auth/auth.interceptor";
     BackTopComponent,
     UserMenuComponent,
     BlankComponent,
-    SearchComponent,
     NotFoundComponent,
     FlagsMenuComponent,
   ],

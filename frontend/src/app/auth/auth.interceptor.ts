@@ -39,9 +39,11 @@ export class AuthInterceptor implements HttpInterceptor {
         );
       }
 
-      headers = headers.append("id_usuario", usuarioLogado.id);
-      if (!!usuarioLogado.id_empresa) {
-        headers = headers.append("id_empresa", usuarioLogado.id_empresa);
+      if (!!usuarioLogado) {
+        headers = headers.append("id_usuario", usuarioLogado.id);
+        if (!!usuarioLogado.id_empresa) {
+          headers = headers.append("id_empresa", usuarioLogado.id_empresa);
+        }
       }
 
       newReq = req.clone({

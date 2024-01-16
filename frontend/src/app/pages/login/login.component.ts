@@ -9,6 +9,7 @@ import {
   ValidationErrors,
 } from "@angular/forms";
 import { AuthService } from "../../auth/auth.service";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-login",
@@ -43,7 +44,7 @@ export class LoginComponent {
     this.senha = this.form.controls["senha"] as UntypedFormControl;
   }
 
-  public onSubmit(values: Record<string, string>): void {
+  public onSubmit(values: any): void {
     if (this.form.valid) {
       this.authService.login(values).subscribe((response) => {
         this.authService.setToken(response.access_token);
@@ -58,6 +59,11 @@ export class LoginComponent {
     const preloader = document.getElementById("preloader");
     if (preloader) {
       preloader.classList.add("hide");
+    }
+
+    if (!environment.production) {
+      this.email.setValue("dev@dev.com");
+      this.senha.setValue("Senh@D1f1c1l!");
     }
   }
 }

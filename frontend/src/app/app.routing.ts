@@ -2,7 +2,6 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule, PreloadAllModules } from "@angular/router";
 import { PagesComponent } from "./pages/pages.component";
 import { BlankComponent } from "./pages/blank/blank.component";
-import { SearchComponent } from "./pages/search/search.component";
 import { NotFoundComponent } from "./pages/errors/not-found/not-found.component";
 import { authGuard } from "./guards/auth.guard";
 
@@ -15,20 +14,23 @@ export const routes: Routes = [
       {
         path: "",
         loadChildren: () =>
-          import("./pages/dashboard/dashboard.module").then(
-            (m) => m.DashboardModule
+          import("./pages/usuarios/usuarios.module").then(
+            (m) => m.UsuariosModule
           ),
-        data: { breadcrumb: "Dashboard" },
+        data: { breadcrumb: "Controle Mensal" },
+      },
+      {
+        path: "usuarios",
+        loadChildren: () =>
+          import("./pages/usuarios/usuarios.module").then(
+            (m) => m.UsuariosModule
+          ),
+        data: { breadcrumb: "Usuarios" },
       },
       {
         path: "blank",
         component: BlankComponent,
         data: { breadcrumb: "Blank page" },
-      },
-      {
-        path: "search",
-        component: SearchComponent,
-        data: { breadcrumb: "Search" },
       },
     ],
   },

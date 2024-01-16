@@ -1,0 +1,44 @@
+<style>
+  .table-hover:hover {
+    background-color: #f5f5f5;
+    cursor: pointer;
+  }
+</style>
+
+<div class="row">
+  <div class="col-12 mb-4">
+    <div widget class="card border-0 box-shadow">
+      <div class="card-header transparent border-0 text-muted">
+        <h5 class="mb-0">Consultando Usuários</h5>
+      </div>
+      <div class="card-body pt-0 widget-body">
+        <div class="row">
+          <button type="button" class="btn btn-info w-100p mb-1 mr-1"> Consultar </button>
+        </div>
+        <div class="row">
+          <table class="table table-responsible table-sm">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Criado Em</th>
+                <th>Atualizado Em</th>
+                <th>Ativo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let usuario of usuarios" class="table-hover" (click)="abrirUsuario(usuario.id)">
+                <th scope="row">{{ usuario.nome }}</th>
+                <td>{{ usuario.email }}</td>
+                <td>{{ usuario.criado_em }}</td>
+                <td>{{ usuario.atualizado_em }}</td>
+                <td>{{ usuario.ativo }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

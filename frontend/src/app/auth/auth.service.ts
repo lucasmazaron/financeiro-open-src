@@ -16,7 +16,7 @@ type UsuarioLogado = {
 export class AuthService {
   constructor(private api: ApiService, private router: Router) {}
 
-  public login({ email, senha }: Record<string, string>): Observable<any> {
+  public login({ email, senha }: any): Observable<any> {
     return this.api.post("/auth/login", { email, senha });
   }
 
@@ -42,10 +42,14 @@ export class AuthService {
     localStorage.setItem(LocalStorageKeys.DADOS_USUARIO, userData);
   }
 
-  public getUserData(): UsuarioLogado {
-    return JSON.parse(
-      localStorage.getItem(LocalStorageKeys.DADOS_USUARIO) ?? ""
-    ) as UsuarioLogado;
+  public getUserData(): UsuarioLogado | null {
+    const userStr = localStorage.getItem(LocalStorageKeys.DADOS_USUARIO);
+
+    if (!!userStr) {
+      return JSON.parse(userStr) as UsuarioLogado;
+    }
+
+    return null;
   }
 
   public removeUserData(): void {
