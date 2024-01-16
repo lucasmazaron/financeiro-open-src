@@ -1,26 +1,59 @@
+import { DatabaseService } from '@database/DatabaseService';
 import { Injectable } from '@nestjs/common';
-import { CreateUsuarioDto } from './dto/create-usuario.dto';
-import { UpdateUsuarioDto } from './dto/update-usuario.dto';
-
+import { Usuario } from '@prisma/client';
+import * as _ from 'lodash';
 @Injectable()
 export class UsuariosService {
-  create(createUsuarioDto: CreateUsuarioDto) {
-    return 'This action adds a new usuario';
+  constructor(private db: DatabaseService) {}
+
+  async create(createUsuarioDto: any) {
+    return await this.db.usuario.create({
+      data: createUsuarioDto,
+    });
   }
 
-  findAll() {
-    return `This action returns all usuarios`;
+  async listaPaginado(page: number) {
+    const take = 10;
+    const result = await this.db.usuario.findMany({
+      skip: page * 10 - 10,
+      take,
+    });
+
+    const total = await this.db.usuario.count();
+
+    return {
+      data: result as Usuario[],
+      pagination: {
+        total,
+        lastPage: _.ceil(total / take),
+        perPage: take,
+        currentPage: page,
+      },
+    };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} usuario`;
+  async findOne(id: string) {
+    return await this.db.usuario.findFirst({
+      where: {
+        id,
+      },
+    });
   }
 
-  update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
-    return `This action updates a #${id} usuario`;
+  async update(updateUsuarioDTO: any) {
+    return await this.db.usuario.update({
+      data: updateUsuarioDTO,
+      where: {
+        id: updateUsuarioDTO.id,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} usuario`;
+  async remove(id: string) {
+    return await this.db.usuario.delete({
+      where: {
+        id,
+      },
+    });
   }
 }
