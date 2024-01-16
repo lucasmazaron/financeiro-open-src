@@ -18,7 +18,9 @@ model Empresa {
   cnpj  String  @unique
   ativo Boolean @default(true)
 
-  Usuario Usuario[]
+  Usuario  Usuario[]
+  Despesas Despesas[]
+  Receitas Receitas[]
 
   @@map("empresa")
 }
@@ -41,24 +43,30 @@ model Usuario {
 }
 
 model Despesas {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   descricao String
   valor     Float
-  data      DateTime @db.Date()
-  pago      Boolean  @default(false)
-  data_pago DateTime @db.Timestamptz()
+  data      DateTime  @db.Date()
+  pago      Boolean   @default(false)
+  data_pago DateTime? @db.Timestamptz()
+
+  Empresa    Empresa @relation(fields: [id_empresa], references: [id])
+  id_empresa String
 
   @@map("despesas")
 }
 
 model Receitas {
-  id            String   @id @default(uuid())
+  id            String    @id @default(uuid())
   origem        String // local de onde veio a receita
   descricao     String
   valor         Float
-  data          DateTime @db.Date()
-  recebido      Boolean  @default(false)
-  data_recebido DateTime @db.Timestamptz()
+  data          DateTime  @db.Date()
+  recebido      Boolean   @default(false)
+  data_recebido DateTime? @db.Timestamptz()
+
+  Empresa    Empresa @relation(fields: [id_empresa], references: [id])
+  id_empresa String
 
   @@map("receitas")
 }
