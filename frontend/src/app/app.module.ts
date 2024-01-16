@@ -1,5 +1,5 @@
 import { BrowserModule } from "@angular/platform-browser";
-import { NgModule } from "@angular/core";
+import { LOCALE_ID, NgModule } from "@angular/core";
 import { AppRoutingModule } from "./app.routing";
 import { NgScrollbarModule } from "ngx-scrollbar";
 
@@ -31,6 +31,10 @@ import { FlagsMenuComponent } from "./theme/components/flags-menu/flags-menu.com
 import { AuthService } from "./auth/auth.service";
 import { ApiService } from "./api.service";
 import { AuthInterceptor } from "./auth/auth.interceptor";
+import localePt from "@angular/common/locales/pt";
+import { registerLocaleData } from "@angular/common";
+
+registerLocaleData(localePt);
 
 @NgModule({
   imports: [
@@ -69,6 +73,10 @@ import { AuthInterceptor } from "./auth/auth.interceptor";
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true,
+    },
+    {
+      provide: LOCALE_ID,
+      useValue: "pt-BR",
     },
   ],
   bootstrap: [AppComponent],

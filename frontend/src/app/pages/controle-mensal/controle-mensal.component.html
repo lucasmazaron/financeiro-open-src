@@ -1,0 +1,39 @@
+<div class="row">
+  <div id="despesas" class="col-6">
+    <div class="desp-header">
+      DESPESAS
+    </div>
+
+    <div class="desp-table">
+      <table class="table table-responsible table-sm" style="margin-top: 5px;">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Descrição</th>
+            <th>Valor</th>
+            <th>Pago</th>
+            <th>Data Pagamento</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let despesa of despesas">
+            <th scope="row">{{ despesa.data }}</th>
+            <td>{{ despesa.descricao }}</td>
+            <td>{{ despesa.valor | currency: 'R$'}}</td>
+            <td>{{ despesa.pago }}</td>
+            <td>{{ despesa.data_pago }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div id="receitas" class="col-6">
+    <div class="rec-header">
+      RECEITAS
+    </div>
+    <div class="rec-table">
+
+    </div>
+  </div>
+
+</div>

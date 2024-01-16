@@ -14,8 +14,8 @@ export const routes: Routes = [
       {
         path: "",
         loadChildren: () =>
-          import("./pages/usuarios/usuarios.module").then(
-            (m) => m.UsuariosModule
+          import("./pages/controle-mensal/controle-mensal.module").then(
+            (m) => m.ControleMensalModule
           ),
         data: { breadcrumb: "Controle Mensal" },
       },
