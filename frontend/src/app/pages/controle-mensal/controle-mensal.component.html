@@ -1,38 +1,160 @@
+<form [formGroup]="formFiltros" class="controle-filtros">
+  <div class="controle-filtros-campos form-group row">
+    <label for=" col-3 form-control-label"><b>Mês</b></label>
+    <div style="width: 95px;">
+      <select formControlName="mes" class="form-control" id="input-mes">
+        <option [value]="1">Janeiro</option>
+        <option [value]="2">Fevereiro</option>
+        <option [value]="3">Março</option>
+        <option [value]="4">Abril</option>
+        <option [value]="5">Maio</option>
+        <option [value]="6">Junho</option>
+        <option [value]="7">Julho</option>
+        <option [value]="8">Agosto</option>
+        <option [value]="9">Setembro</option>
+        <option [value]="10">Outubro</option>
+        <option [value]="11">Novembro</option>
+        <option [value]="12">Dezembro</option>
+      </select>
+
+    </div>
+  </div>
+
+  <div class="controle-filtros-campos form-group row text-sm-right">
+    <label for="col-3 form-control-label"><b>Ano</b></label>
+    <div style="width: 85px;">
+      <input type="number" class="form-control" id="input-ano" formControlName="ano">
+    </div>
+  </div>
+
+  <button type="button" class="btn btn-info" (click)="copiarDespesas()"> Copiar Mes Anterior </button>
+</form>
+
+
+<div class="row cards-totalizadores">
+
+  <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 pl-2 pr-2 mb-4">
+    <div class="card" style="background-color: #0b6623;">
+      <div class="card-header" style="height: 40px;">
+        <h5 class="card-title text-center"><i class="fa fa-money mr-2"></i> Receitas </h5>
+      </div>
+      <div class="card-body" style="height: 50px;">
+        <p class="card-text text-center" style="color: #FFF; font-weight: bold;">{{ totalEmReceitas | currency: 'R$' }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 pl-2 pr-2 mb-4">
+    <div class="card" style="background-color: rgb(145, 23, 21);">
+      <div class="card-header" style="height: 40px;">
+        <h5 class="card-title text-center"><i class="fa fa-calculator mr-2"></i> Despesas</h5>
+      </div>
+      <div class="card-body" style="height: 50px;">
+        <p class="card-text text-center" style="color: #FFF; font-weight: bold;">{{ totalEmDespesas | currency: 'R$' }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 pl-2 pr-2 mb-4">
+    <div class="card" style="background-color: rgb(11, 70, 122);">
+      <div class="card-header" style="height: 40px;">
+        <h5 class="card-title text-center"><i class="fa fa-bank mr-2"></i>Saldo</h5>
+      </div>
+      <div class="card-body" style="height: 50px;">
+        <p class="card-text text-center" style="color: #FFF; font-weight: bold;">
+          {{ saldo | currency: 'R$' }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="row">
-  <div id="despesas" class="col-6">
+  <div *ngIf="editandoReceita" class="col-6">
+    <app-form-receitas [form]="formReceitas" (cancelar)="cancelarFormReceitas()"
+      (salvar)="salvarReceita()"></app-form-receitas>
+  </div>
+  <div *ngIf="!editandoReceita" id="receitas" class="col-6">
+    <div class="rec-header">
+      <button type="button" class="btn-customizado-add" (click)="editarReceita()">
+        <i class="fa fa-plus"></i>
+        RECEITAS
+      </button>
+    </div>
+    <div class="rec-table">
+      <table class="table table-responsible table-sm" style="margin-top: 5px;">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th class="text-center">Data</th>
+            <th>Origem</th>
+            <th>Descrição</th>
+            <th class="text-right">Valor Receita</th>
+            <th class="text-center">Recebido</th>
+            <th class="text-center">Recebimento</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let receita of receitas">
+            <td>
+              <button class="btn-customizado" (click)="editarReceita(receita)"><i class="fa fa-edit"></i></button>
+              <button class="btn-customizado" (click)="deleteReceita(receita.id)"><i class="fa fa-trash"></i></button>
+            </td>
+            <td class="text-center">{{ dateUtils.formatDateWithoutTime(receita.data) }}</td>
+            <td>{{ receita.origem }}</td>
+            <td>{{ receita.descricao }}</td>
+            <td class="text-right">{{ receita.valor | currency: 'R$' }}</td>
+            <td class="text-center">{{ receita.recebido ? 'Sim' : 'Não' }}</td>
+            <td class="text-center">{{ dateUtils.formatDateWithoutTime(receita.data_recebido) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <div *ngIf="editandoDespesa" class="col-6">
+    <app-form-despesas [form]="formDespesas" (cancelar)="cancelarFormDespesa()"
+      (salvar)="salvarDespesa()"></app-form-despesas>
+  </div>
+  <div *ngIf="!editandoDespesa" id="despesas" class="col-6">
     <div class="desp-header">
-      DESPESAS
+      <button type="button" class="btn-customizado-add" (click)="editarDespesa()">
+        <i class="fa fa-plus"></i>
+        DESPESAS
+      </button>
     </div>
 
     <div class="desp-table">
       <table class="table table-responsible table-sm" style="margin-top: 5px;">
         <thead>
           <tr>
-            <th>Data</th>
+            <th>#</th>
+            <th class="text-center">Data</th>
             <th>Descrição</th>
-            <th>Valor</th>
-            <th>Pago</th>
-            <th>Data Pagamento</th>
+            <th class="text-right">Valor Despesa</th>
+            <th class="text-center">Pago</th>
+            <th class="text-center">Pagamento</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let despesa of despesas">
-            <th scope="row">{{ despesa.data }}</th>
+            <td>
+              <button class="btn-customizado" (click)="editarDespesa(despesa)"><i class="fa fa-edit"></i></button>
+              <button class="btn-customizado" (click)="deleteDespesa(despesa.id)"><i class="fa fa-trash"></i></button>
+            </td>
+            <td class="text-center">
+              {{ dateUtils.formatDateWithoutTime(despesa.data) }}
+            </td>
             <td>{{ despesa.descricao }}</td>
-            <td>{{ despesa.valor | currency: 'R$'}}</td>
-            <td>{{ despesa.pago }}</td>
-            <td>{{ despesa.data_pago }}</td>
+            <td class="text-right">{{ despesa.valor | currency: 'R$' }}</td>
+            <td class="text-center">{{ despesa.pago ? 'Sim' : 'Não' }}</td>
+            <td class="text-center">{{ dateUtils.formatDateWithoutTime(despesa.data_pago) }}</td>
           </tr>
         </tbody>
       </table>
-    </div>
-  </div>
-  <div id="receitas" class="col-6">
-    <div class="rec-header">
-      RECEITAS
-    </div>
-    <div class="rec-table">
-
     </div>
   </div>
 

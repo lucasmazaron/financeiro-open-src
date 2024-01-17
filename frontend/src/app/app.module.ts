@@ -33,8 +33,23 @@ import { ApiService } from "./api.service";
 import { AuthInterceptor } from "./auth/auth.interceptor";
 import localePt from "@angular/common/locales/pt";
 import { registerLocaleData } from "@angular/common";
+import {
+  CurrencyMaskConfig,
+  CurrencyMaskModule,
+  CURRENCY_MASK_CONFIG,
+} from "ng2-currency-mask";
 
 registerLocaleData(localePt);
+
+export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
+  align: "right",
+  allowNegative: true,
+  decimal: ",",
+  precision: 2,
+  prefix: "R$ ",
+  suffix: "",
+  thousands: ".",
+};
 
 @NgModule({
   imports: [
@@ -49,6 +64,7 @@ registerLocaleData(localePt);
         deps: [HttpClient],
       },
     }),
+    CurrencyMaskModule,
   ],
   declarations: [
     AppComponent,
@@ -78,6 +94,7 @@ registerLocaleData(localePt);
       provide: LOCALE_ID,
       useValue: "pt-BR",
     },
+    { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig },
   ],
   bootstrap: [AppComponent],
 })
