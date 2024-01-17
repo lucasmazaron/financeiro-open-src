@@ -1,9 +1,13 @@
 import {
   BadRequestException,
+  Body,
   Controller,
+  Delete,
   Get,
   Headers,
   Param,
+  Post,
+  Put,
 } from '@nestjs/common';
 import { ControleMensalService } from './controle-mensal.service';
 
@@ -28,6 +32,94 @@ export class ControleMensalController {
       ano,
       id_empresa,
       id_usuario,
+    });
+  }
+
+  @Get('receitas/mes/:mes/ano/:ano')
+  async getReceitas(
+    @Headers() headers: any,
+    @Param('mes') mes: string,
+    @Param('ano') ano: string,
+  ) {
+    const { id_usuario, id_empresa } = headers;
+
+    if (!id_empresa || !id_usuario) {
+      throw new BadRequestException('id_empresa e id_usuario são obrigatórios');
+    }
+
+    return await this.controleMensalService.getReceitas({
+      mes,
+      ano,
+      id_empresa,
+      id_usuario,
+    });
+  }
+
+  @Post('receitas')
+  async createReceita(@Headers() headers: any, @Body() body: any) {
+    const { id_usuario, id_empresa } = headers;
+
+    if (!id_empresa || !id_usuario) {
+      throw new BadRequestException('id_empresa e id_usuario são obrigatórios');
+    }
+    return await this.controleMensalService.createReceita({
+      id_empresa,
+      dados: body,
+    });
+  }
+
+  @Post('despesas/copiar')
+  async copiarDespesas(@Headers() headers: any, @Body() body: any) {
+    const { id_usuario, id_empresa } = headers;
+
+    if (!id_empresa || !id_usuario) {
+      throw new BadRequestException('id_empresa e id_usuario são obrigatórios');
+    }
+    return await this.controleMensalService.copiarDespesas({
+      id_empresa,
+      dados: body,
+    });
+  }
+
+  @Put('receitas')
+  async updateReceita(@Headers() headers: any, @Body() body: any) {
+    const { id_usuario, id_empresa } = headers;
+
+    if (!id_empresa || !id_usuario) {
+      throw new BadRequestException('id_empresa e id_usuario são obrigatórios');
+    }
+
+    return await this.controleMensalService.updateReceita({
+      id_empresa,
+      dados: body,
+    });
+  }
+
+  @Delete('receitas/:id')
+  async deleteReceita(@Headers() headers: any, @Param('id') id: string) {
+    const { id_usuario, id_empresa } = headers;
+
+    if (!id_empresa || !id_usuario) {
+      throw new BadRequestException('id_empresa e id_usuario são obrigatórios');
+    }
+
+    return await this.controleMensalService.deleteReceita({
+      id_empresa,
+      id,
+    });
+  }
+
+  @Delete('despesas/:id')
+  async deleteDespesa(@Headers() headers: any, @Param('id') id: string) {
+    const { id_usuario, id_empresa } = headers;
+
+    if (!id_empresa || !id_usuario) {
+      throw new BadRequestException('id_empresa e id_usuario são obrigatórios');
+    }
+
+    return await this.controleMensalService.deleteDespesa({
+      id_empresa,
+      id,
     });
   }
 }

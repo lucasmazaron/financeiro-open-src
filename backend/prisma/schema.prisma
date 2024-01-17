@@ -46,7 +46,7 @@ model Despesas {
   id        String    @id @default(uuid())
   descricao String
   valor     Float
-  data      DateTime  @db.Date()
+  data      DateTime  @db.Timestamptz()
   pago      Boolean   @default(false)
   data_pago DateTime? @db.Timestamptz()
 
@@ -61,7 +61,7 @@ model Receitas {
   origem        String // local de onde veio a receita
   descricao     String
   valor         Float
-  data          DateTime  @db.Date()
+  data          DateTime  @db.Timestamptz()
   recebido      Boolean   @default(false)
   data_recebido DateTime? @db.Timestamptz()
 
