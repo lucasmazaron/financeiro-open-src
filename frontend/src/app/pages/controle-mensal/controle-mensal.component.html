@@ -140,7 +140,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let despesa of despesas">
+          <tr *ngFor="let despesa of despesas" [ngClass]="{'pago': !!despesa.pago}">
             <td>
               <button class="btn-customizado" (click)="editarDespesa(despesa)"><i class="fa fa-edit"></i></button>
               <button class="btn-customizado" (click)="deleteDespesa(despesa.id)"><i class="fa fa-trash"></i></button>
