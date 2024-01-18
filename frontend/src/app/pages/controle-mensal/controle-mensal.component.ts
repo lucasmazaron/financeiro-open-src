@@ -5,7 +5,7 @@ import { AuthService } from "src/app/auth/auth.service";
 import { DateUtils } from "utils/date.utils";
 import momentTimezone from "moment-timezone";
 
-interface IDespesas {
+interface IDespesa {
   id: string;
   descricao: string;
   valor: number;
@@ -22,7 +22,7 @@ export const OrigemReceita = [
   { key: "OUTROS", value: "Outros" },
 ];
 
-interface IReceitas {
+interface IReceita {
   id: string;
   origem: any;
   descricao: string;
@@ -45,8 +45,8 @@ export class ControleMensalComponent implements OnInit {
 
   id_usuario: string;
 
-  receitas: IReceitas[];
-  despesas: IDespesas[];
+  receitas: IReceita[];
+  despesas: IDespesa[];
 
   totalEmDespesas: number = 0;
   totalEmReceitas: number = 0;
@@ -73,7 +73,7 @@ export class ControleMensalComponent implements OnInit {
     this.formReceitas.reset();
   }
 
-  editarReceita(receita?: IReceitas): void {
+  editarReceita(receita?: IReceita): void {
     this.formReceitas
       .get("data")
       ?.setValue(DateUtils.formatDateToBackend(new Date()));
@@ -108,7 +108,7 @@ export class ControleMensalComponent implements OnInit {
       .subscribe(() => this.buscar());
   }
 
-  editarDespesa(despesa?: IDespesas): void {
+  editarDespesa(despesa?: IDespesa): void {
     this.formDespesas
       .get("data")
       ?.setValue(DateUtils.formatDateToBackend(new Date()));
@@ -184,7 +184,7 @@ export class ControleMensalComponent implements OnInit {
     this.formDespesas.reset();
   }
 
-  despesasRowClick(despesa: IDespesas): void {
+  despesasRowClick(despesa: IDespesa): void {
     this.formDespesas.patchValue(despesa);
   }
 
@@ -226,6 +226,90 @@ export class ControleMensalComponent implements OnInit {
 
   calculaSaldo(): void {
     this.saldo = this.totalEmReceitas - this.totalEmDespesas;
+  }
+
+  getDespRowClass(despesa: IDespesa): any {
+    if (!!despesa?.pago) {
+      return {
+        pago: true,
+      };
+    }
+
+    return {
+      "vencendo-hoje": this.isDespesaAtrasada(despesa),
+      "vencendo-semana": this.isDespesaAVencerNaSemana(despesa),
+    };
+  }
+
+  getRecRowClass(receita: IReceita): any {
+    if (!!receita?.recebido) {
+      return {
+        recebido: true,
+      };
+    }
+
+    return {
+      "vencendo-hoje": this.isReceitaAtrasada(receita),
+      "vencendo-semana": this.isReceitaAVencerNaSemana(receita),
+    };
+  }
+
+  isReceitaAVencerNaSemana(receita: IReceita): boolean {
+    // Cria a data atual na zona horária "America/Sao_Paulo"
+    const dataAtual = momentTimezone.tz(new Date(), "America/Sao_Paulo");
+
+    // Converte a data da despesa para a mesma zona horária
+    const dataReceita = momentTimezone.tz(receita.data, "America/Sao_Paulo");
+
+    // Verifica se a data da despesa está entre hoje e os próximos 7 dias
+    return (
+      dataReceita.isAfter(dataAtual) &&
+      dataReceita.isBefore(dataAtual.clone().add(7, "days"))
+    );
+  }
+
+  isReceitaAtrasada(receita: IReceita): boolean {
+    const dataAtual = momentTimezone
+      .tz(new Date(), "America/Sao_Paulo")
+      .toDate();
+    const dataReceita = momentTimezone
+      .tz(receita.data, "America/Sao_Paulo")
+      .toDate();
+
+    if (dataReceita <= dataAtual) {
+      return true;
+    }
+
+    return false;
+  }
+
+  isDespesaAVencerNaSemana(despesa: IDespesa): boolean {
+    // Cria a data atual na zona horária "America/Sao_Paulo"
+    const dataAtual = momentTimezone.tz(new Date(), "America/Sao_Paulo");
+
+    // Converte a data da despesa para a mesma zona horária
+    const dataDespesa = momentTimezone.tz(despesa.data, "America/Sao_Paulo");
+
+    // Verifica se a data da despesa está entre hoje e os próximos 7 dias
+    return (
+      dataDespesa.isAfter(dataAtual) &&
+      dataDespesa.isBefore(dataAtual.clone().add(7, "days"))
+    );
+  }
+
+  isDespesaAtrasada(despesa: IDespesa): boolean {
+    const dataAtual = momentTimezone
+      .tz(new Date(), "America/Sao_Paulo")
+      .toDate();
+    const dataDespesa = momentTimezone
+      .tz(despesa.data, "America/Sao_Paulo")
+      .toDate();
+
+    if (dataDespesa <= dataAtual) {
+      return true;
+    }
+
+    return false;
   }
 
   setForm(): void {

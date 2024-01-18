@@ -17,11 +17,11 @@
 
 
             <div class="top-rigth-icons ml-auto">
-                <span class="d-none d-sm-inline-block">
-                    <!-- <app-flags-menu></app-flags-menu> -->
+                <span class="d-none d-sm-inline-block mr-3">
+                    Usuário: <b>{{ usuarioLogado?.nome }}</b>
                 </span>
-                <span class="hidden-xs-down">
-                    <!-- <app-user-menu></app-user-menu> -->
+                <span class="d-none d-sm-inline-block">
+                    <app-fullscreen></app-fullscreen>
                 </span>
                 <span class="pl-2 pr-2">
                     <a (click)="signout()">

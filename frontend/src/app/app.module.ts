@@ -38,6 +38,7 @@ import {
   CurrencyMaskModule,
   CURRENCY_MASK_CONFIG,
 } from "ng2-currency-mask";
+import { FullScreenComponent } from "./theme/components/fullscreen/fullscreen.component";
 
 registerLocaleData(localePt);
 
@@ -80,6 +81,7 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     BlankComponent,
     NotFoundComponent,
     FlagsMenuComponent,
+    FullScreenComponent,
   ],
   providers: [
     AppSettings,

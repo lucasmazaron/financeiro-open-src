@@ -36,6 +36,7 @@ export class HeaderComponent implements OnInit {
   public showInfoContent: boolean = false;
   public settings: Settings;
   public menuItems: Array<any>;
+  public usuarioLogado = this.auth.getUserData();
   constructor(
     public appSettings: AppSettings,
     public menuService: MenuService,

@@ -97,7 +97,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let receita of receitas">
+          <tr *ngFor="let receita of receitas" [ngClass]="getRecRowClass(receita)">
             <td>
               <button class="btn-customizado" (click)="editarReceita(receita)"><i class="fa fa-edit"></i></button>
               <button class="btn-customizado" (click)="deleteReceita(receita.id)"><i class="fa fa-trash"></i></button>
@@ -140,7 +140,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let despesa of despesas" [ngClass]="{'pago': !!despesa.pago}">
+          <tr *ngFor="let despesa of despesas" [ngClass]="getDespRowClass(despesa)">
             <td>
               <button class="btn-customizado" (click)="editarDespesa(despesa)"><i class="fa fa-edit"></i></button>
               <button class="btn-customizado" (click)="deleteDespesa(despesa.id)"><i class="fa fa-trash"></i></button>
