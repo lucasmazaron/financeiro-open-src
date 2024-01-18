@@ -95,6 +95,20 @@ export class ControleMensalController {
     });
   }
 
+  @Put('despesas')
+  async updateDespesa(@Headers() headers: any, @Body() body: any) {
+    const { id_usuario, id_empresa } = headers;
+
+    if (!id_empresa || !id_usuario) {
+      throw new BadRequestException('id_empresa e id_usuario são obrigatórios');
+    }
+
+    return await this.controleMensalService.updateDespesas({
+      id_empresa,
+      dados: body,
+    });
+  }
+
   @Delete('receitas/:id')
   async deleteReceita(@Headers() headers: any, @Param('id') id: string) {
     const { id_usuario, id_empresa } = headers;
