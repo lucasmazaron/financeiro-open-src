@@ -55,6 +55,19 @@ export class ControleMensalController {
     });
   }
 
+  @Post('despesas')
+  async createDespesa(@Headers() headers: any, @Body() body: any) {
+    const { id_usuario, id_empresa } = headers;
+
+    if (!id_empresa || !id_usuario) {
+      throw new BadRequestException('id_empresa e id_usuario são obrigatórios');
+    }
+    return await this.controleMensalService.createDespesas({
+      id_empresa,
+      dados: body,
+    });
+  }
+
   @Post('receitas')
   async createReceita(@Headers() headers: any, @Body() body: any) {
     const { id_usuario, id_empresa } = headers;

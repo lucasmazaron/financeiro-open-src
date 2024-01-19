@@ -23,6 +23,7 @@ export class ControleMensalService {
 
   async createDespesas({ id_empresa, dados }) {
     dados = this.formataDataDespesa(dados);
+
     const despesa = await this.db.despesas.create({
       data: {
         ...dados,
