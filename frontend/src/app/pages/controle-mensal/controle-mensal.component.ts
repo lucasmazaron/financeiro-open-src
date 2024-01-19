@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AuthService } from "src/app/auth/auth.service";
 import { DateUtils } from "utils/date.utils";
 import momentTimezone from "moment-timezone";
+import { removeNull } from "utils/general.utils";
 
 interface IDespesa {
   id: string;
@@ -144,35 +145,44 @@ export class ControleMensalComponent implements OnInit {
   }
 
   salvarReceita(): void {
-    const receita = this.formReceitas.value;
+    const receita = removeNull(this.formReceitas.value);
 
     receita.recebido = receita.recebido === "true";
     if (!!receita.id) {
-      this.controleMensalService
-        .updateReceita(receita)
-        .subscribe(() => this.buscar());
-    } else {
-      this.controleMensalService
-        .createReceita(receita)
-        .subscribe(() => this.buscar());
-    }
+      this.controleMensalService.updateReceita(receita).subscribe(() => {
+        this.buscarReceitas();
 
-    this.editandoReceita = false;
-    this.formReceitas.reset();
+        this.editandoReceita = false;
+        this.formReceitas.reset();
+      });
+    } else {
+      this.controleMensalService.createReceita(receita).subscribe(() => {
+        this.buscarReceitas();
+
+        this.editandoReceita = false;
+        this.formReceitas.reset();
+      });
+    }
   }
 
   salvarDespesa(): void {
-    const despesa = this.formDespesas.value;
+    const despesa = removeNull(this.formDespesas.value);
 
     despesa.pago = despesa.pago === "true";
     if (!!despesa.id) {
-      this.controleMensalService
-        .updateDespesa(despesa)
-        .subscribe(() => this.buscar());
+      this.controleMensalService.updateDespesa(despesa).subscribe(() => {
+        this.buscarDespesas();
+
+        this.editandoReceita = false;
+        this.formReceitas.reset();
+      });
     } else {
-      this.controleMensalService
-        .createDespesa(despesa)
-        .subscribe(() => this.buscar());
+      this.controleMensalService.createDespesa(despesa).subscribe(() => {
+        this.buscarDespesas();
+
+        this.editandoReceita = false;
+        this.formReceitas.reset();
+      });
     }
 
     this.editandoDespesa = false;
