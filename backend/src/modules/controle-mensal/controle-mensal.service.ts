@@ -15,7 +15,7 @@ export class ControleMensalService {
         and extract(year from d.data) = ${ano}
         and d.id_empresa = '${id_empresa}'
         and u.id = '${id_usuario}'
-        order by d.data, d.data_pago
+        order by d.pago, d.data, d.data_pago
     `);
 
     return despesas;
@@ -81,7 +81,7 @@ export class ControleMensalService {
          and extract(year from r.data) = ${ano}
          and r.id_empresa = '${id_empresa}'
          and u.id = '${id_usuario}'
-        order by r.data, r.data_recebido
+        order by r.recebido, r.data, r.data_recebido
     `);
 
     return receitas;
