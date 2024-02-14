@@ -46,6 +46,4 @@ testem.log
 Thumbs.db
 .env
 
-
-
-.env
+.firebase

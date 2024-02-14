@@ -17,7 +17,7 @@ interface IDespesa {
 
 export const OrigemReceita = [
   { key: "UNIMED", value: "Unimed" },
-  { key: "CLINICA_OTORRINO", value: "Clinica Otorrino" },
+  { key: "CLINICA_OTORRINO", value: "C.Otorrino" },
   { key: "SOBREVIVER", value: "Sobreviver" },
   { key: "CLINIMED", value: "Clinimed" },
   { key: "OUTROS", value: "Outros" },
@@ -72,6 +72,11 @@ export class ControleMensalComponent implements OnInit {
   cancelarFormReceitas(): void {
     this.editandoReceita = false;
     this.formReceitas.reset();
+  }
+
+  traduzOrigem(origem: string): string {
+    const origemTraduzida = OrigemReceita.find((o) => o.key === origem);
+    return origemTraduzida?.value || origem;
   }
 
   editarReceita(receita?: IReceita): void {

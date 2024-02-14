@@ -93,7 +93,7 @@
             <th>Descrição</th>
             <th class="text-right">Valor Receita</th>
             <th class="text-center">Recebido</th>
-            <th class="text-center">Recebimento</th>
+            <!-- <th class="text-center">Recebimento</th> -->
           </tr>
         </thead>
         <tbody>
@@ -103,11 +103,11 @@
               <button class="btn-customizado" (click)="deleteReceita(receita.id)"><i class="fa fa-trash"></i></button>
             </td>
             <td class="text-center">{{ dateUtils.formatDateWithoutTime(receita.data) }}</td>
-            <td>{{ receita.origem }}</td>
+            <td>{{ traduzOrigem(receita.origem) }}</td>
             <td>{{ receita.descricao }}</td>
             <td class="text-right">{{ receita.valor | currency: 'R$' }}</td>
             <td class="text-center">{{ receita.recebido ? 'Sim' : 'Não' }}</td>
-            <td class="text-center">{{ dateUtils.formatDateWithoutTime(receita.data_recebido) }}</td>
+            <!-- <td class="text-center">{{ dateUtils.formatDateWithoutTime(receita.data_recebido) }}</td> -->
           </tr>
         </tbody>
       </table>
@@ -136,7 +136,7 @@
             <th>Descrição</th>
             <th class="text-right">Valor Despesa</th>
             <th class="text-center">Pago</th>
-            <th class="text-center">Pagamento</th>
+            <!-- <th class="text-center">Pagamento</th> -->
           </tr>
         </thead>
         <tbody>
@@ -151,7 +151,7 @@
             <td>{{ despesa.descricao }}</td>
             <td class="text-right">{{ despesa.valor | currency: 'R$' }}</td>
             <td class="text-center">{{ despesa.pago ? 'Sim' : 'Não' }}</td>
-            <td class="text-center">{{ dateUtils.formatDateWithoutTime(despesa.data_pago) }}</td>
+            <!-- <td class="text-center">{{ dateUtils.formatDateWithoutTime(despesa.data_pago) }}</td> -->
           </tr>
         </tbody>
       </table>
