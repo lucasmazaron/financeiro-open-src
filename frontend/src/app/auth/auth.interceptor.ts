@@ -46,6 +46,8 @@ export class AuthInterceptor implements HttpInterceptor {
         }
       }
 
+      headers = headers.append("ngrok-skip-browser-warning", "69420fire");
+
       newReq = req.clone({
         headers,
       });

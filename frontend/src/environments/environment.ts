@@ -2,5 +2,5 @@
 export const environment = {
   production: true,
   // apiUrl: "http://localhost:3000/api",
-  apiUrl: "https://financeiro.paglinque.com.br/api",
+  apiUrl: "https://presumably-loved-stork.ngrok-free.app/api",
 };
