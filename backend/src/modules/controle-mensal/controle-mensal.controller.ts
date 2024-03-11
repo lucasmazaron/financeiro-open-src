@@ -81,14 +81,14 @@ export class ControleMensalController {
     });
   }
 
-  @Post('despesas/copiar')
-  async copiarDespesas(@Headers() headers: any, @Body() body: any) {
+  @Post('copiar')
+  async copiar(@Headers() headers: any, @Body() body: any) {
     const { id_usuario, id_empresa } = headers;
 
     if (!id_empresa || !id_usuario) {
       throw new BadRequestException('id_empresa e id_usuario são obrigatórios');
     }
-    return await this.controleMensalService.copiarDespesas({
+    return await this.controleMensalService.copiar({
       id_empresa,
       dados: body,
     });

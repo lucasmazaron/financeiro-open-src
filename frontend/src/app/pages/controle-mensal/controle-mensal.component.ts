@@ -50,7 +50,9 @@ export class ControleMensalComponent implements OnInit {
   despesas: IDespesa[];
 
   totalEmDespesas: number = 0;
+  totalEmDespesasAbertas: number = 0;
   totalEmReceitas: number = 0;
+  totalEmReceitasAbertas: number = 0;
   saldo: number = 0;
 
   dateUtils = DateUtils;
@@ -98,7 +100,7 @@ export class ControleMensalComponent implements OnInit {
     }
   }
 
-  copiarDespesas(): void {
+  copiar(): void {
     const mes = this.formFiltros.get("mes")?.value - 1;
     const ano = this.formFiltros.get("ano")?.value;
 
@@ -107,7 +109,7 @@ export class ControleMensalComponent implements OnInit {
     }
 
     this.controleMensalService
-      .copiarDespesas({
+      .copiar({
         mes,
         ano,
       })
@@ -220,6 +222,14 @@ export class ControleMensalComponent implements OnInit {
         0
       );
 
+      this.totalEmReceitasAbertas = data.reduce((acc: any, cur: any) => {
+        if (!cur.recebido) {
+          return acc + cur.valor;
+        } else {
+          return acc;
+        }
+      }, 0);
+
       this.calculaSaldo();
     });
   }
@@ -235,6 +245,15 @@ export class ControleMensalComponent implements OnInit {
         (acc: any, cur: any) => acc + cur.valor,
         0
       );
+
+      this.totalEmDespesasAbertas = data.reduce((acc: any, cur: any) => {
+        if (!cur.pago) {
+          return acc + cur.valor;
+        } else {
+          return acc;
+        }
+      }, 0);
+
       this.calculaSaldo();
     });
   }

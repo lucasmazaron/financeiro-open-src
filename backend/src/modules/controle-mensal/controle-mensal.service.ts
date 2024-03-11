@@ -1,6 +1,6 @@
 import * as momentTimezone from 'moment-timezone';
 import { DatabaseService } from '@database/DatabaseService';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class ControleMensalService {
@@ -64,7 +64,7 @@ export class ControleMensalService {
     dados.data = this.formataData(dados.data);
 
     if (dados?.data_pago) {
-      dados.data_pago = this.formataData(dados.data);
+      dados.data_pago = this.formataData(dados.data_pago);
     } else {
       delete dados.data_pago;
     }
@@ -91,7 +91,7 @@ export class ControleMensalService {
     dados.data = this.formataData(dados.data);
 
     if (dados?.data_recebido) {
-      dados.data_recebido = this.formataData(dados.data);
+      dados.data_recebido = this.formataData(dados.data_recebido);
     } else {
       delete dados.data_recebido;
     }
@@ -149,20 +149,6 @@ export class ControleMensalService {
   }
 
   async copiarDespesas({ id_empresa, dados }) {
-    const isExisteDespesas = await this.db.executeQuery(`
-    select count(1)
-      from despesas d
-     where extract(month from d.data) = ${dados.mes + 1}
-       and extract(year from d.data) = ${dados.ano}
-       and d.id_empresa = '${id_empresa}'
-   `);
-
-    if (isExisteDespesas[0].count > 0) {
-      throw new BadRequestException(
-        'Já existe despesas cadastradas para o mês selecionado',
-      );
-    }
-
     const despesas = await this.db.executeQuery(`
      select d.*
        from despesas d
@@ -180,13 +166,52 @@ export class ControleMensalService {
       despesa.data = this.formataDataParaDate(despesa.data);
       despesa.data.setMonth(despesa.data.getMonth() + 1);
 
+      if (despesa.data.getMonth() + 1 < despesa.data.getMonth()) {
+        despesa.data.setDate(momentTimezone(despesa.data).date() - 3);
+      }
+
       return despesa;
     });
-
-    console.log({ id_empresa, dados }, despesasTratadas);
 
     await this.db.despesas.createMany({
       data: despesasTratadas,
     });
+  }
+
+  async copiarReceitas({ id_empresa, dados }) {
+    const receitas = await this.db.executeQuery(`
+      select r.*
+        from receitas r
+       where extract(month from r.data) = ${dados.mes}
+         and extract(year from r.data) = ${dados.ano}
+         and r.id_empresa = '${id_empresa}'
+        order by r.data, r.data_recebido
+    `);
+
+    const receitasTratadas = receitas.map((receita) => {
+      delete receita.id;
+      delete receita.data_recebido;
+      receita.recebido = false;
+
+      const dataVencimento = this.formataDataParaDate(receita.data);
+      receita.data.setMonth(dataVencimento.getMonth() + 1);
+
+      if (dataVencimento.getMonth() + 1 < receita.data.getMonth()) {
+        receita.data.setDate(momentTimezone(receita.data).date() - 3);
+      }
+
+      return receita;
+    });
+
+    await this.db.receitas.createMany({
+      data: receitasTratadas,
+    });
+  }
+
+  async copiar({ id_empresa, dados }) {
+    await Promise.all([
+      this.copiarDespesas({ id_empresa, dados }),
+      this.copiarReceitas({ id_empresa, dados }),
+    ]);
   }
 }

@@ -27,7 +27,7 @@
     </div>
   </div>
 
-  <button type="button" class="btn btn-info" (click)="copiarDespesas()"> Copiar Mes Anterior </button>
+  <button type="button" class="btn btn-info" (click)="copiar()"> Copiar Mes Anterior </button>
 </form>
 
 
@@ -69,14 +69,42 @@
       </div>
     </div>
   </div>
+
+
+
+  <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 pl-2 pr-2 mb-4">
+    <div class="card" style="background-color: #389250;">
+      <div class="card-header" style="height: 40px;">
+        <h5 class="card-title text-center"><i class="fa fa-money mr-2"></i> Receitas em Aberto </h5>
+      </div>
+      <div class="card-body" style="height: 50px;">
+        <p class="card-text text-center" style="color: #FFF; font-weight: bold;">{{ totalEmReceitasAbertas | currency:
+          'R$' }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 pl-2 pr-2 mb-4">
+    <div class="card" style="background-color: rgb(154, 70, 68);">
+      <div class="card-header" style="height: 40px;">
+        <h5 class="card-title text-center"><i class="fa fa-calculator mr-2"></i> Despesas em Aberto</h5>
+      </div>
+      <div class="card-body" style="height: 50px;">
+        <p class="card-text text-center" style="color: #FFF; font-weight: bold;">{{ totalEmDespesasAbertas | currency:
+          'R$' }}
+        </p>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="row">
-  <div *ngIf="editandoReceita" class="col-6">
+<div class="row divDespRec">
+  <div *ngIf="editandoReceita">
     <app-form-receitas [form]="formReceitas" (cancelar)="cancelarFormReceitas()"
       (salvar)="salvarReceita()"></app-form-receitas>
   </div>
-  <div *ngIf="!editandoReceita" id="receitas" class="col-6">
+  <div *ngIf="!editandoReceita" id="receitas" class="col-sm-6">
     <div class="rec-header">
       <button type="button" class="btn-customizado-add" (click)="editarReceita()">
         <i class="fa fa-plus"></i>
@@ -115,11 +143,11 @@
   </div>
 
 
-  <div *ngIf="editandoDespesa" class="col-6">
+  <div *ngIf="editandoDespesa">
     <app-form-despesas [form]="formDespesas" (cancelar)="cancelarFormDespesa()"
       (salvar)="salvarDespesa()"></app-form-despesas>
   </div>
-  <div *ngIf="!editandoDespesa" id="despesas" class="col-6">
+  <div *ngIf="!editandoDespesa" id="despesas" class="col-sm-6">
     <div class="desp-header">
       <button type="button" class="btn-customizado-add" (click)="editarDespesa()">
         <i class="fa fa-plus"></i>

@@ -1,3 +1,5 @@
+import * as moment from 'moment-timezone';
+
 export const formatDateFilter = ({
   startDate,
   endDate,
@@ -11,3 +13,7 @@ export const formatDateFilter = ({
     return `${endDate}T23:59:59-03:00`;
   }
 };
+
+export function isDataValida(data) {
+  return moment(data, 'YYYY-MM-DD', true).isValid();
+}

@@ -37,7 +37,7 @@ export class ControleMensalService {
     return this.api.delete(`/controle-mensal/despesas/${id}`);
   }
 
-  copiarDespesas(data: any) {
-    return this.api.post(`/controle-mensal/despesas/copiar`, data);
+  copiar(data: any) {
+    return this.api.post(`/controle-mensal/copiar`, data);
   }
 }
